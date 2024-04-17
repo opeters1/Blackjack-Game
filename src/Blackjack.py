@@ -13,11 +13,6 @@ playing = True
 while playing:
     suits = [spades, diamonds, hearts, clubs]
 
-    def face_check(dealer_card):
-        face_cards_dlr = {"Jack": 10, "Queen": 10, "King": 10, "Ace": 11}
-        if dealer_card in face_cards_dlr:
-            return face_cards_dlr[dealer_card]
-
     def draw_card():
         '''Randomly picks a suit, then picks a card from that suit.'''
         suit = random.choice(suits)  # picks a random suit from the deck
@@ -34,9 +29,11 @@ while playing:
 
     # This is to check if the dealer drew a face card. If he did, it will be converted into a numerical value.
 
-    face_check(dealer_1)
-    print(dealer_1)
-    face_check(dealer_2)
+    face_cards_dlr = {"Jack": 10, "Queen": 10, "King": 10, "Ace": 11}
+    if dealer_1 in face_cards_dlr:
+        dealer_1 = face_cards_dlr[dealer_1]
+    if dealer_2 in face_cards_dlr:
+        dealer_2 = face_cards_dlr[dealer_2]
     print(dealer_2)
 
     dealer_total = int(dealer_1) + int(dealer_2)
