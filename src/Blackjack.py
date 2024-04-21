@@ -5,8 +5,6 @@ from deck import spades, diamonds, hearts, clubs
 
 print("\nWelcome to Blackjack.\nYour goal is to have a higher hand than the dealer, without going over 21.")
 
-streak = 0
-
 suits = [spades, diamonds, hearts, clubs]
 
 money = 500
@@ -26,15 +24,32 @@ def face_check(card):
     else:
         return int(card)
 
+def draw_card():
+    '''Randomly picks a suit, then picks a card from that suit.'''
+    suit = random.choice(suits)  # picks a random suit from the deck
+    card = random.choice(suit)  # picks a random card from the suit
+    suit.remove(card)  # removes the card from the deck, for consistency
+    return card
+
+def check_win(player_total, dealer_total):
+    if player_total > dealer_total:
+        print(f"\nYour score:     {player_score}")
+        print(f"Dealer's score: {dealer_total}")
+        print("\nYou win!\n")
+        return [False, 0]
+    elif player_total < dealer_total:
+        print(f"\nYour score:     {player_score}")
+        print(f"Dealer's score: {dealer_total}")
+        print("\nYou lose.\n")
+        return [False, 1]
+    else:
+        print(f"\nYour score:     {player_score}")
+        print(f"Dealer's score: {dealer_total}")
+        print("It is a tie.")
+        return [False, 2]
+
 playing = True
 while playing:
-
-    def draw_card():
-        '''Randomly picks a suit, then picks a card from that suit.'''
-        suit = random.choice(suits)  # picks a random suit from the deck
-        card = random.choice(suit)  # picks a random card from the suit
-        suit.remove(card)  # removes the card from the deck, for consistency
-        return card
 
     dealer_1 = draw_card()
     dealer_2 = draw_card()
@@ -49,18 +64,15 @@ while playing:
     if dealer_2 in face_cards_dlr:
         dealer_2 = face_cards_dlr[dealer_2]
 
-    dealer_total = int(dealer_1) + int(dealer_2)
+    dealer_total = int(dealer_1 + dealer_2)
 
     # Now, it's time for the player to draw cards!
     print(f"Money: ${money}")
     bet = int(input("How much would you like to bet? $"))
     money = money - bet
-    card_list = []
     player_score = 0
     first_card = draw_card()
-    card_list.append(first_card)
     second_card = draw_card()
-    card_list.append(second_card)
 
     print(f"Dealer's cards are {dealer_1} and ???")
     print(f"\nYour cards are {first_card} and {second_card}.")
@@ -78,27 +90,15 @@ while playing:
     while drawing:
         play = input(f"Would you like to draw another card? (Points: {player_score}) Y/N: ")
         if play.lower() == "n":
-
-            # Checking win conditions
-
-            if player_score > dealer_total:
-                print(f"\nYour score:     {player_score}")
-                print(f"Dealer's score: {dealer_total}")
-                print("\nYou win!\n")
-                money = money + 2*bet
-                print(f"Money: ${money}")
-                streak += 1
-                drawing = False
-            elif player_score < dealer_total:
-                print(f"\nYour score:     {player_score}")
-                print(f"Dealer's score: {dealer_total}")
-                print("\nYou lose.\n")
-                print(f"Money: ${money}")
-                streak = 0
-                if money == 0:
-                    print("You have run out of money. Thank you for playing!")
-                    playing = False
-            drawing = False
+            results = check_win(player_score, dealer_total)
+            if results[1] == 0:
+                money += 2*bet
+            elif results[1] == 1:
+                money = money
+            elif results[1] == 2:
+                money += bet
+            print(f"You now have ${money}")
+            drawing = results[0]
         else:
             card = draw_card()
             print(f"You drew a {card}.")
@@ -106,16 +106,14 @@ while playing:
             print(f"\nYour point total is: {player_score}.")
             if player_score > 21:
                 print("Your score is over 21.\nYou lose.\n")
-                streak = 0
                 drawing = False
             else:
                 drawing = True
-    print(f"Current win streak: {streak}")
     cont = input("Would you like to play again? Y/N: ")
     if cont.lower() == "y":
         playing = True
     else:
-        print(f"Final Money: ${money}")
+        print(f"\nFinal Profit: ${money} - $500 = ${money - 500}")
         print("Thank you for playing!")
         playing = False
 
