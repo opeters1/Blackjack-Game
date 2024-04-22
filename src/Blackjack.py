@@ -32,6 +32,7 @@ def draw_card():
     return card
 
 def check_win(player_total, dealer_total):
+    '''Compares the player and dealer scores'''
     if player_total > dealer_total:
         print(f"\nYour score:     {player_score}")
         print(f"Dealer's score: {dealer_total}")
@@ -64,12 +65,25 @@ while playing:
     if dealer_2 in face_cards_dlr:
         dealer_2 = face_cards_dlr[dealer_2]
 
-    dealer_total = int(dealer_1 + dealer_2)
+    dealer_score = int(dealer_1 + dealer_2)
 
-    # Now, it's time for the player to draw cards!
+    # Place your bets
+
     print(f"Money: ${money}")
-    bet = int(input("How much would you like to bet? $"))
+    betting = True
+    while betting:
+        bet = input("How much would you like to bet? $")
+        try:
+            int(bet)
+        except ValueError:
+            print("Invalid input!")
+        else:
+            bet = int(bet)
+            betting = False
     money = money - bet
+
+    # Now, time for the player to draw cards.
+
     player_score = 0
     first_card = draw_card()
     second_card = draw_card()
@@ -90,7 +104,8 @@ while playing:
     while drawing:
         play = input(f"Would you like to draw another card? (Points: {player_score}) Y/N: ")
         if play.lower() == "n":
-            results = check_win(player_score, dealer_total)
+            results = check_win(player_score, dealer_score)
+            # Here's where the money gets dealt out.
             if results[1] == 0:
                 money += 2*bet
             elif results[1] == 1:
