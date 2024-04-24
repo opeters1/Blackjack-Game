@@ -69,7 +69,7 @@ while playing:
 
     # Place your bets
 
-    print(f"Money: ${money}")
+    print(f"PythonBucks: ${money}")
     betting = True
     while betting:
         bet = input("How much would you like to bet? $")
