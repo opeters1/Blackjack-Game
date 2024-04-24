@@ -96,7 +96,7 @@ while playing:
     player_score += face_check(first_card)
     player_score += face_check(second_card)
 
-    # At this point, the two cards have been drawn. Now, the player should draw cards until their total goes over 21.
+    # Now, the player draws cards until they quit or their score breaks 21.
 
     print(f"Your point total is {player_score}.\n")
 
