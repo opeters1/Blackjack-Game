@@ -1,7 +1,9 @@
 # Blackjack by Oliver Peterson 2024
 
 import random
-from deck import spades, diamonds, hearts, clubs
+from deck import spades, diamonds, hearts, clubs, logo
+
+print(logo)
 
 print("\nWelcome to Blackjack.\nYour goal is to have a higher hand than the dealer, without going over 21.")
 
